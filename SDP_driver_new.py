@@ -1,11 +1,13 @@
+#Annotated By Frank M.
+
 import clr
 import sdpApi1
 from time import sleep
 import sys
+    
 
 def connect_sdp(hwid_list, *_args, **_kwargs):
     # Method to connect to an SDP board from a list of IDs you want to maintain
-
     # If there's only one item in the list, connect to it
     if len(hwid_list) == 1:
         return Sdp(hwid_list[0], *_args, **_kwargs)
@@ -451,36 +453,3 @@ class Sdp:
 
         # Return the status bit
         return ret
-
-
-def main():
-    # List of all Hardware IDs I want to look through to see if a board matches.
-    # This is helpful because you can maintain a list of all IDs you've ever wanted to connect to, and the
-    # connect_sdp() method above will find the board if it's connected.
-    hw_ids = ['6065711100000001', '0000742800002001', '653074280006520A']
-
-    # Connect to the SDP board
-    mySdp = connect_sdp(hw_ids, sclkFrequency=2e6)
-
-    # Show whether the connection was successful
-    if mySdp.connected:
-        print '\nWe\'re connected!'
-        print '\nBoard Name =', mySdp.name
-        print 'Board Description =', mySdp.description
-
-        # Flash the LED a bunch of times
-        for i in xrange(2):
-            mySdp.flash_led()
-        address = 0x0A
-        data = 0x55
-
-    else:
-        print '\n\tNo connection made... handle is a dummy'
-
-#    print (sys.argv[1],sys.argv[2])
-#    address=int(sys.argv[1],16)
-#    data=int(sys.argv[2],16)
-
-    mySdp.write_spi(address, data)
-    
-if __name__ == '__main__':
